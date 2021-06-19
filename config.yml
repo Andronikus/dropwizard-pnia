@@ -1,0 +1,19 @@
+# server configuration
+server:
+  applicationConnectors:
+    - type: http
+      port: 8080
+  adminConnectors:
+    - type: http
+      port: 8081
+
+# app logging
+logging:
+  level: INFO
+  appenders:
+    - type: file
+      threshold: INFO
+      currentLogFilename: ./logs/pnia.log
+      archivedLogFilenamePattern: ./logs/migrator-%d.log.gz
+      archivedFileCount: 5
+      timeZone: UTC
