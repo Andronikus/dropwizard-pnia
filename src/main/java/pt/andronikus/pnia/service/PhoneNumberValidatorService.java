@@ -1,8 +1,8 @@
-package pt.andronikus.pnia.core;
+package pt.andronikus.pnia.service;
 
 import java.util.regex.Pattern;
 
-public class PhoneNumberValidator {
+public class PhoneNumberValidatorService {
 
     private final Pattern ONLY_DIGITS = Pattern.compile("\\d+");
 

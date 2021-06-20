@@ -5,8 +5,8 @@ import pt.andronikus.pnia.api.AggregationInfo;
 import pt.andronikus.pnia.api.BusinessInfo;
 import pt.andronikus.pnia.api.BusinessSectorCounter;
 import pt.andronikus.pnia.api.PhoneList;
-import pt.andronikus.pnia.core.PhoneBusinessInfoService;
-import pt.andronikus.pnia.core.PhoneNumberValidator;
+import pt.andronikus.pnia.service.PhoneBusinessInfoService;
+import pt.andronikus.pnia.service.PhoneNumberValidatorService;
 import pt.andronikus.pnia.core.PhonePrefix;
 
 import javax.ws.rs.client.Client;
@@ -18,12 +18,12 @@ import java.util.concurrent.TimeUnit;
 public class AggregatorController {
 
     private final PhoneBusinessInfoService phoneBusinessInfoService;
-    private final PhoneNumberValidator phoneNumberValidator;
+    private final PhoneNumberValidatorService phoneNumberValidator;
 
     public AggregatorController() {
         Client client = ClientBuilder.newBuilder().connectTimeout(2, TimeUnit.SECONDS).build();
         this.phoneBusinessInfoService = new PhoneBusinessInfoService(client);
-        this.phoneNumberValidator = new PhoneNumberValidator();
+        this.phoneNumberValidator = new PhoneNumberValidatorService();
     }
 
     public AggregationInfo aggregatePhoneInfo(PhoneList phoneList){

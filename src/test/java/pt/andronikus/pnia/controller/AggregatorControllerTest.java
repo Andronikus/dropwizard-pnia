@@ -1,7 +1,7 @@
 package pt.andronikus.pnia.controller;
 
 import org.junit.jupiter.api.Test;
-import pt.andronikus.pnia.core.PhoneNumberValidator;
+import pt.andronikus.pnia.service.PhoneNumberValidatorService;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,7 +12,7 @@ class AggregatorControllerTest {
 
     @Test
     void normalizeNumber() {
-        PhoneNumberValidator phoneNumberValidator = new PhoneNumberValidator();
+        PhoneNumberValidatorService phoneNumberValidator = new PhoneNumberValidatorService();
 
         assertEquals("17490276403", phoneNumberValidator.normalizeNumber("+1 7490276403"));
         assertEquals("17490276403", phoneNumberValidator.normalizeNumber("001 7490276403"));
