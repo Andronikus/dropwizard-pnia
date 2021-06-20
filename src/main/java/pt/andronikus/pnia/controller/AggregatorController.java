@@ -5,6 +5,7 @@ import pt.andronikus.pnia.api.AggregationInfo;
 import pt.andronikus.pnia.api.BusinessInfo;
 import pt.andronikus.pnia.api.BusinessSectorCounter;
 import pt.andronikus.pnia.api.PhoneList;
+import pt.andronikus.pnia.service.PhoneAggregatorService;
 import pt.andronikus.pnia.service.PhoneBusinessInfoService;
 import pt.andronikus.pnia.service.PhoneNumberValidatorService;
 import pt.andronikus.pnia.core.PhonePrefix;
@@ -21,12 +22,14 @@ public class AggregatorController {
     private final PhoneBusinessInfoService phoneBusinessInfoService;
     private final PhoneNumberValidatorService phoneNumberValidator;
     private final PhonePrefixService phonePrefixService;
+    private final PhoneAggregatorService phoneAggregatorService;
 
     public AggregatorController() {
         Client client = ClientBuilder.newBuilder().connectTimeout(2, TimeUnit.SECONDS).build();
         this.phoneBusinessInfoService = new PhoneBusinessInfoService(client);
         this.phoneNumberValidator = new PhoneNumberValidatorService();
         this.phonePrefixService = new PhonePrefixService(PhonePrefix.INSTANCE.getPrefixList());
+        this.phoneAggregatorService = new PhoneAggregatorService();
     }
 
     public AggregationInfo aggregatePhoneInfo(PhoneList phoneList){
@@ -44,7 +47,7 @@ public class AggregatorController {
                     businessInfo = phoneBusinessInfoService.getBusinessInfoForPhoneNumber(phoneNumber);
 
                     if (Objects.nonNull(businessInfo)){
-                        aggregateInfo(phonePrefix,businessInfo.getBusinessSector(),aggregationInfo);
+                        phoneAggregatorService.aggregateInfo(phonePrefix,businessInfo.getBusinessSector(),aggregationInfo);
                     }
                 }
             }
@@ -52,20 +55,4 @@ public class AggregatorController {
 
         return aggregationInfo;
     }
-
-    public void aggregateInfo(String prefix, String businessSector, AggregationInfo aggregationInfo){
-
-        BusinessSectorCounter businessSectorCounter = aggregationInfo.getBusinessSectorCounterForPrefix(prefix);
-
-        if(Objects.isNull(businessSectorCounter)){
-            aggregationInfo.addNewPrefix(prefix);
-        }
-
-        aggregationInfo.getBusinessSectorCounterForPrefix(prefix).addBusinessSector(businessSector);
-    }
-
-
-
-
-
 }

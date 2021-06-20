@@ -2,6 +2,8 @@ package pt.andronikus.pnia;
 
 import io.dropwizard.Application;
 import io.dropwizard.setup.Environment;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pt.andronikus.pnia.configuration.PhoneNumberInfoAggregatorConfiguration;
 import pt.andronikus.pnia.core.PhonePrefix;
 import pt.andronikus.pnia.resources.PhoneNumberAggregatorResource;
@@ -14,8 +16,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 public class PhoneNumberInfoAggregator extends Application<PhoneNumberInfoAggregatorConfiguration> {
-
-
+    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass().getName());
 
     public static void main(String[] args) throws Exception {
         new PhoneNumberInfoAggregator().run(args);
@@ -23,7 +24,7 @@ public class PhoneNumberInfoAggregator extends Application<PhoneNumberInfoAggreg
 
     @Override
     public void run(PhoneNumberInfoAggregatorConfiguration phoneNumberInfoAggregatorConfiguration, Environment environment) throws Exception {
-        loadPrefixInfoFromFile();
+        loadPrefixInfoFromFile("prefixes.txt");
         environment.jersey().register(new PhoneNumberAggregatorResource());
     }
 
@@ -36,8 +37,9 @@ public class PhoneNumberInfoAggregator extends Application<PhoneNumberInfoAggreg
         return inputStream;
     }
 
-    private void loadPrefixInfoFromFile(){
-        InputStream is = getFileFromResourceAsStream("prefixes.txt");
+    private void loadPrefixInfoFromFile(String fileName){
+        InputStream is = getFileFromResourceAsStream(fileName);
+        int prefixCounter = 0;
 
         try(InputStreamReader inputStreamReader = new InputStreamReader(is, StandardCharsets.UTF_8);
             BufferedReader reader = new BufferedReader(inputStreamReader)){
@@ -45,7 +47,9 @@ public class PhoneNumberInfoAggregator extends Application<PhoneNumberInfoAggreg
             String line;
             while((line = reader.readLine()) != null){
                 PhonePrefix.INSTANCE.addPrefix(line);
+                prefixCounter++;
             }
+            LOGGER.info("%d prefix(s) loaded from file %s", prefixCounter, fileName);
         } catch (IOException e) {
             e.printStackTrace();
         }
