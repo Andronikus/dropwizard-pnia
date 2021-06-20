@@ -21,6 +21,8 @@ public class PhoneBusinessInfoService {
         final WebTarget webTarget= webClient.target("https://challenge-business-sector-api.meza.talkdeskstg.com/sector/{phoneNumber}")
                                             .resolveTemplateFromEncoded("phoneNumber", phoneNumber);
 
+        LOGGER.info(String.format("get business info for phone number %s", phoneNumber));
+
         Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE)
                                      .accept(MediaType.APPLICATION_JSON_TYPE)
                                      .get();
