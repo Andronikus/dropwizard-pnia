@@ -6,9 +6,9 @@ import pt.andronikus.pnia.configuration.PhoneNumberInfoAggregatorConfiguration;
 
 public class BusinessInfoClientManaged implements Managed {
 
-    private PhoneNumberInfoAggregatorConfiguration cfg;
-    private Environment environment;
-    private String appName;
+    private final PhoneNumberInfoAggregatorConfiguration cfg;
+    private final Environment environment;
+    private final String appName;
 
     public BusinessInfoClientManaged(Environment environment, PhoneNumberInfoAggregatorConfiguration cfg, String appName) {
         this.cfg = cfg;
@@ -17,12 +17,12 @@ public class BusinessInfoClientManaged implements Managed {
     }
 
     @Override
-    public void start() throws Exception {
+    public void start() {
         BusinessInfoClient.INSTANCE.createClient(cfg,environment,appName);
     }
 
     @Override
-    public void stop() throws Exception {
+    public void stop() {
         BusinessInfoClient.INSTANCE.closeClient();
     }
 }

@@ -25,16 +25,20 @@ public class PhonePrefixService {
      *
      */
     public String getPhonePrefix(String phoneNumber){
+        long startTime = System.nanoTime();
+
         String normalizedNumber = phoneNumberValidatorService.normalizeNumber(phoneNumber);
 
         for(int i=0; i < normalizedNumber.length(); i++){
             String prefix = normalizedNumber.substring(0,i+1);
 
             if (prefixes.contains(prefix)){
-                LOGGER.info(String.format("prefix founded for phone number %s. value: %s", phoneNumber,prefix));
+                long elapsedTime = (System.nanoTime() - startTime)/1000000;
+                LOGGER.info(String.format("prefix founded for phone number %s. value: %s in %d (ms)", phoneNumber,prefix, elapsedTime));
                 return prefix;
             }
         }
+
 
         LOGGER.info(String.format("prefix not founded for phone number %s", phoneNumber));
         return "";
