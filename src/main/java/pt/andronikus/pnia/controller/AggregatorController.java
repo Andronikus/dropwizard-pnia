@@ -8,6 +8,7 @@ import pt.andronikus.pnia.api.PhoneList;
 import pt.andronikus.pnia.service.PhoneBusinessInfoService;
 import pt.andronikus.pnia.service.PhoneNumberValidatorService;
 import pt.andronikus.pnia.core.PhonePrefix;
+import pt.andronikus.pnia.service.PhonePrefixService;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -19,11 +20,13 @@ public class AggregatorController {
 
     private final PhoneBusinessInfoService phoneBusinessInfoService;
     private final PhoneNumberValidatorService phoneNumberValidator;
+    private final PhonePrefixService phonePrefixService;
 
     public AggregatorController() {
         Client client = ClientBuilder.newBuilder().connectTimeout(2, TimeUnit.SECONDS).build();
         this.phoneBusinessInfoService = new PhoneBusinessInfoService(client);
         this.phoneNumberValidator = new PhoneNumberValidatorService();
+        this.phonePrefixService = new PhonePrefixService(PhonePrefix.INSTANCE.getPrefixList());
     }
 
     public AggregationInfo aggregatePhoneInfo(PhoneList phoneList){
@@ -35,7 +38,7 @@ public class AggregatorController {
 
             if(phoneNumberValidator.isValidPhoneNumber(phoneNumber))
             {
-                String phonePrefix = getPhonePrefix(phoneNumber, PhonePrefix.INSTANCE.getPrefixList());
+                String phonePrefix = phonePrefixService.getPhonePrefix(phoneNumber);
 
                 if(phonePrefix.length() > 0){
                     businessInfo = phoneBusinessInfoService.getBusinessInfoForPhoneNumber(phoneNumber);
@@ -61,20 +64,7 @@ public class AggregatorController {
         aggregationInfo.getBusinessSectorCounterForPrefix(prefix).addBusinessSector(businessSector);
     }
 
-    public String getPhonePrefix(String phoneNumber, Set<String> prefixes){
-        String normalizedNumber = phoneNumberValidator.normalizeNumber(phoneNumber);
 
-        for(int i=0; i < normalizedNumber.length(); i++){
-            String prefix = normalizedNumber.substring(0,i+1);
-            System.out.println(prefix);
-
-            if (prefixes.contains(prefix)){
-                return prefix;
-            }
-        }
-
-        return "";
-    }
 
 
 

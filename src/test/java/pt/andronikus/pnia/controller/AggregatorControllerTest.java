@@ -2,6 +2,7 @@ package pt.andronikus.pnia.controller;
 
 import org.junit.jupiter.api.Test;
 import pt.andronikus.pnia.service.PhoneNumberValidatorService;
+import pt.andronikus.pnia.service.PhonePrefixService;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -27,10 +28,10 @@ class AggregatorControllerTest {
         listPrefixes.add("18");
         listPrefixes.add("3");
 
-        AggregatorController controller = new AggregatorController();
-        assertEquals("18",controller.getPhonePrefix("+189192879", listPrefixes));
-        assertEquals("12",controller.getPhonePrefix("+129823978", listPrefixes));
-        assertEquals("3",controller.getPhonePrefix("+398123938", listPrefixes));
-        assertEquals("",controller.getPhonePrefix("+598123938", listPrefixes));
+        PhonePrefixService phonePrefixService = new PhonePrefixService(listPrefixes);
+        assertEquals("18",phonePrefixService.getPhonePrefix("+189192879"));
+        assertEquals("12",phonePrefixService.getPhonePrefix("+129823978"));
+        assertEquals("3",phonePrefixService.getPhonePrefix("+398123938"));
+        assertEquals("",phonePrefixService.getPhonePrefix("+598123938"));
     }
 }
