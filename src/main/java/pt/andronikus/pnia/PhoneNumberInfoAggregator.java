@@ -5,6 +5,7 @@ import io.dropwizard.setup.Environment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pt.andronikus.pnia.configuration.PhoneNumberInfoAggregatorConfiguration;
+import pt.andronikus.pnia.core.BusinessInfoClientManaged;
 import pt.andronikus.pnia.core.PhonePrefix;
 import pt.andronikus.pnia.resources.PhoneNumberAggregatorResource;
 
@@ -22,9 +23,14 @@ public class PhoneNumberInfoAggregator extends Application<PhoneNumberInfoAggreg
         new PhoneNumberInfoAggregator().run(args);
     }
 
+    public String getName(){
+        return "pnia";
+    }
+
     @Override
-    public void run(PhoneNumberInfoAggregatorConfiguration phoneNumberInfoAggregatorConfiguration, Environment environment) throws Exception {
+    public void run(PhoneNumberInfoAggregatorConfiguration configuration, Environment environment) throws Exception {
         loadPrefixInfoFromFile("prefixes.txt");
+        environment.lifecycle().manage(new BusinessInfoClientManaged(environment,configuration,getName()));
         environment.jersey().register(new PhoneNumberAggregatorResource());
     }
 
@@ -49,7 +55,7 @@ public class PhoneNumberInfoAggregator extends Application<PhoneNumberInfoAggreg
                 PhonePrefix.INSTANCE.addPrefix(line);
                 prefixCounter++;
             }
-            LOGGER.info("%d prefix(s) loaded from file %s", prefixCounter, fileName);
+            LOGGER.info(String.format("%d prefix(s) loaded from file %s", prefixCounter, fileName));
         } catch (IOException e) {
             e.printStackTrace();
         }
