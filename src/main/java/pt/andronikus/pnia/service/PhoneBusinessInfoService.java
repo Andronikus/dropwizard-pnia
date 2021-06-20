@@ -3,6 +3,7 @@ package pt.andronikus.pnia.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pt.andronikus.pnia.api.BusinessInfo;
+import pt.andronikus.pnia.core.BusinessInfoClient;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
