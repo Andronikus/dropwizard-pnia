@@ -9,10 +9,10 @@ server:
 
 # app logging
 logging:
-  level: INFO
+  level: WARN
   appenders:
     - type: file
-      threshold: INFO
+      threshold: WARN
       currentLogFilename: ./logs/pnia.log
       archivedLogFilenamePattern: ./logs/migrator-%d.log.gz
       archivedFileCount: 5

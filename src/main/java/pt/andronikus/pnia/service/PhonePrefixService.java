@@ -36,7 +36,7 @@ public class PhonePrefixService {
 
             if (prefixes.contains(prefix)){
                 long elapsedTime = Duration.between(startTime, Instant.now()).toMillis();
-                LOGGER.info(String.format("prefix found for phone number %s in in %d (ms). prefix: %s ", phoneNumber, elapsedTime , prefix));
+                LOGGER.info(String.format("prefix found for phone number %s in %d (ms). prefix: %s ", phoneNumber, elapsedTime , prefix));
                 return prefix;
             }
         }
