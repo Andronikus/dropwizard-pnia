@@ -36,6 +36,7 @@ public class PhoneNumberValidatorService {
      * + Emptiness or Nullable
      * + When + (plus) is present a space should not be present immediately after the +
      * + Phone number should have only digits (only + and space are permitted)
+     * + Size of phone number should be 3 (exact) or a more than 6 and less than 13
      *
      * @param phoneNumber String representation of a phone number
      * @return Boolean value indicating if the underlying phone number is valid or not
@@ -46,14 +47,12 @@ public class PhoneNumberValidatorService {
         return !isEmptyOrNull(phoneNumber) &&
                !spaceAfterPlusSignal(phoneNumber) &&
                 onlyDigits(phoneNumber) &&
-                havePlusSignalAndItsTheFirstPhoneNumberCharacter(phoneNumber);
+                havePlusSignalAndItsTheFirstPhoneNumberCharacter(phoneNumber) &&
+                hasValidNumberOfDigits(phoneNumber);
     }
 
     private boolean isEmptyOrNull(String phoneNumber){
-
-        if(phoneNumber == null)  return true;
-
-        return phoneNumber.trim().length() == 0;
+        return phoneNumber == null || phoneNumber.trim().length() == 0;
     }
 
     private boolean onlyDigits(String phoneNumber){
@@ -68,15 +67,8 @@ public class PhoneNumberValidatorService {
         return !(phoneNumber.trim().indexOf("+") > 0);
     }
 
-
-
-
-    // valid number
-    // has only digits - ok
-    // optional + and digits
-    // +<space> - not valid
-    // exact 3 digits or more than 6 and less than 13 [7,12]
-    // 00 can be replaced as +
-
-
+    private boolean hasValidNumberOfDigits(String phoneNumber){
+        String normalizedNumber = normalizeNumber(phoneNumber);
+        return normalizedNumber.length() == 3 || (normalizedNumber.length() > 6 && normalizedNumber.length() < 13);
+    }
 }

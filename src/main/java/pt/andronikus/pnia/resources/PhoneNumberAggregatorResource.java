@@ -26,7 +26,7 @@ public class PhoneNumberAggregatorResource {
     @Path("/aggregate")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response aggregatePhoneInformation(@NotNull PhoneList phoneList){
-        AggregationInfo aggregationInfo = aggregatorController.aggregatePhoneInfo(phoneList);
-        return Response.status(Response.Status.OK).entity(aggregationInfo).build();
+            AggregationInfo aggregationInfo = aggregatorController.aggregatePhoneInfo(phoneList);
+            return Response.status(Response.Status.OK).entity(aggregationInfo).build();
     }
 }

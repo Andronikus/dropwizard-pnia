@@ -11,10 +11,6 @@ public enum PhonePrefix {
         this.prefixList.add(prefix);
     }
 
-    public boolean prefixMatch(String prefix){
-        return this.prefixList.contains(prefix);
-    }
-
     public HashSet<String> getPrefixList() {
         return prefixList;
     }
