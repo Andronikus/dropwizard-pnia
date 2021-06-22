@@ -28,7 +28,7 @@ public class PhoneNumberInfoAggregator extends Application<PhoneNumberInfoAggreg
     }
 
     @Override
-    public void run(PhoneNumberInfoAggregatorConfiguration configuration, Environment environment) throws Exception {
+    public void run(PhoneNumberInfoAggregatorConfiguration configuration, Environment environment) {
         loadPrefixInfoFromFile("prefixes.txt");
         environment.lifecycle().manage(new BusinessInfoClientManaged(environment,configuration,getName()));
         environment.jersey().register(new PhoneNumberAggregatorResource());

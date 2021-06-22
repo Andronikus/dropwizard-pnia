@@ -36,7 +36,7 @@ public class AggregatorController {
                 String phonePrefix = phonePrefixService.getPhonePrefix(phoneNumber);
 
                 if(phonePrefix.length() > 0){
-                    PhoneBusinessInfoService phoneBusinessInfoService = new PhoneBusinessInfoService(BusinessInfoClient.INSTANCE.client);
+                    PhoneBusinessInfoService phoneBusinessInfoService = new PhoneBusinessInfoService(BusinessInfoClient.INSTANCE.getClient());
                     businessInfo = phoneBusinessInfoService.getBusinessInfoForPhoneNumber(phoneNumber);
 
                     if (Objects.nonNull(businessInfo)){

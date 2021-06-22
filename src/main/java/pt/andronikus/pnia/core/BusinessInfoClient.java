@@ -11,7 +11,7 @@ import javax.ws.rs.client.Client;
 public enum BusinessInfoClient {
     INSTANCE;
     private final Logger LOGGER = LoggerFactory.getLogger(BusinessInfoClient.class.getName());
-    public Client client;
+    private Client client;
 
     public void createClient(PhoneNumberInfoAggregatorConfiguration cfg, Environment environment, String appName){
         this.client = new JerseyClientBuilder(environment)
