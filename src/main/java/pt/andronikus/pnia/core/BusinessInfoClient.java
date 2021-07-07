@@ -17,6 +17,7 @@ public enum BusinessInfoClient {
         this.client = new JerseyClientBuilder(environment)
                                 .using(cfg.getJerseyClientConfiguration())
                                 .build(appName == null ? "defaultApp": appName);
+        LOGGER.info("client: " + client.toString());
         LOGGER.info("Client created with success!");
     }
 

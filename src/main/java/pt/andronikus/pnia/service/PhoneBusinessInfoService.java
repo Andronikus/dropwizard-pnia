@@ -3,6 +3,7 @@ package pt.andronikus.pnia.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pt.andronikus.pnia.api.BusinessInfo;
+import pt.andronikus.pnia.exception.InvalidPhoneNumber;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
@@ -10,6 +11,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Objects;
 
 public class PhoneBusinessInfoService {
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass().getName());
@@ -19,7 +21,7 @@ public class PhoneBusinessInfoService {
         this.webClient = webClient;
     }
 
-    public BusinessInfo getBusinessInfoForPhoneNumber(String phoneNumber){
+    public BusinessInfo getBusinessInfoForPhoneNumber(String phoneNumber) throws InvalidPhoneNumber {
         Instant startTime = Instant.now();
         final WebTarget webTarget= webClient.target("https://challenge-business-sector-api.meza.talkdeskstg.com/sector/{phoneNumber}")
                                             .resolveTemplateFromEncoded("phoneNumber", phoneNumber);
@@ -36,11 +38,15 @@ public class PhoneBusinessInfoService {
         return businessInfo;
     }
 
-    private BusinessInfo processResponse(Response response){
+    private BusinessInfo processResponse(Response response) throws InvalidPhoneNumber {
         try{
             LOGGER.info(String.format("response status code: %d", response.getStatusInfo().getStatusCode()));
             if(response.getStatusInfo().getStatusCode() == Response.Status.OK.getStatusCode()){
                 return response.readEntity(BusinessInfo.class);
+            }
+
+            if(response.getStatusInfo().getStatusCode() == Response.Status.BAD_REQUEST.getStatusCode()){
+                throw new InvalidPhoneNumber();
             }
 
             if(response.getStatusInfo().getFamily() == Response.Status.Family.SERVER_ERROR){
