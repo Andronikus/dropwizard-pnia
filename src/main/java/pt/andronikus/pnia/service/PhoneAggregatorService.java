@@ -9,15 +9,21 @@ import java.util.Objects;
 
 public class PhoneAggregatorService {
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass().getName());
+
+    private final AggregationInfo aggregationInfo = new AggregationInfo();
+
+    public AggregationInfo getAggregationInfo() {
+        return aggregationInfo;
+    }
+
     /**
      * Aggregate the phone info by prefix and business sector.
      *
      * @param prefix phone's number prefix
      * @param businessSector Business sector associated to the phone number
-     * @param aggregationInfo Structure to track the aggregated info taken from the list of phone numbers
      *
      */
-    public void aggregateInfo(String prefix, String businessSector, AggregationInfo aggregationInfo){
+    public void aggregateInfo(String prefix, String businessSector){
 
         if(Objects.isNull(businessSector) || businessSector.length() == 0){
             LOGGER.warn("received a null or empty business sector");
