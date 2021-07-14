@@ -1,5 +1,7 @@
 package pt.andronikus.pnia.resources;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pt.andronikus.pnia.api.AggregationInfo;
 import pt.andronikus.pnia.api.PhoneList;
 import pt.andronikus.pnia.controller.AggregatorController;
@@ -15,10 +17,11 @@ import javax.ws.rs.core.Response;
 @Path("/")
 @Produces(MediaType.APPLICATION_JSON)
 public class PhoneNumberAggregatorResource {
-
+    private Logger LOGGER = LoggerFactory.getLogger(this.getClass().getName());
     private final AggregatorController aggregatorController;
 
     public PhoneNumberAggregatorResource() {
+        LOGGER.info("PhoneNumberAggregatorResource constructor");
         this.aggregatorController = new AggregatorController();
     }
 
